@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        GIT_CREDENTIALS_ID = 'test_jinho'
+        GIT_CREDENTIALS_ID = 'jinho_test_jenkins'
         DOCKER_CREDENTIALS_ID = 'docker-hub-credentials'
         DOCKER_COMPOSE_PATH = 'test/docker-compose.yml'
     }
