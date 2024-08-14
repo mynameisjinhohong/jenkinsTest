@@ -41,9 +41,6 @@ pipeline {
             // 도커 컨테이너 로그를 출력
             sh 'docker-compose -f $DOCKER_COMPOSE_PATH logs'
         }
-        cleanup {
-            // 청소 단계에서 도커 컴포즈 정리
-            sh 'docker-compose -f $DOCKER_COMPOSE_PATH down'
-        }
+        
     }
 }
