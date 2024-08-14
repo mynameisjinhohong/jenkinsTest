@@ -52,7 +52,7 @@ resource "aws_security_group" "jenkins_sg" {
 
 resource "aws_instance" "jenkins_instance" {
   ami           = data.aws_ami.ubuntu.id
-  instance_type = "t2.micro"               # 프리티어 무료 사용이 가능한 인스턴스 유형
+  instance_type = "t3.medium"               # 프리티어 무료 사용이 가능한 인스턴스 유형
 
   key_name = "kakao-tech-bootcamp"  # SSH 키페어 이름
 
