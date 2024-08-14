@@ -88,7 +88,8 @@ resource "aws_instance" "jenkins_instance" {
         sudo apt-get install -y jenkins
         sudo systemctl start jenkins
         sudo systemctl enable jenkins
-
+        sudo usermod -aG docker jenkins
+        sudo systemctl restart jenkins
         # Logging
         echo "Jenkins installed successfully" >> /var/log/user-data.log
 
