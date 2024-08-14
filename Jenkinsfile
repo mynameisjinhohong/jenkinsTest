@@ -29,7 +29,7 @@ pipeline {
                 dir('test') {
                     script {
                         // 도커 컴포즈를 사용하여 빌드 및 배포
-                        sh 'sudo docker-compose -f $DOCKER_COMPOSE_PATH up --build -d'
+                        sh 'docker-compose -f $DOCKER_COMPOSE_PATH up --build -d'
                     }
                 }
             }
