@@ -9,6 +9,15 @@ pipeline {
     }
 
     stages {
+        stage('Check File') {
+            steps {
+                script {
+                    // 경로에 파일이 있는지 확인
+                    sh 'ls -la "test/docker-compose.yml"'
+                }
+            }
+        }
+
         stage('Clone Repository') {
             steps {
                 // 레포지토리 클론
