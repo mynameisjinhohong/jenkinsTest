@@ -1,0 +1,39 @@
+version: '3.8'
+
+networks:
+  mynetwork:
+    driver: bridge
+
+services:
+  db:
+    build: "./PostgreSQL DB생성 후 도커"
+    container_name: my-db-app
+    ports:
+      - "5432:5432"
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - mynetwork
+
+  backend:
+    build: "./Node.js 서버 띄우고 도커빌드 연습"
+    container_name: my-node-app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+    networks:
+      - mynetwork
+
+  frontend:
+    build: "./리엑트 애플리케이션 생성 후 도커로 배포/my-react-app"
+    container_name: my-react-app
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - mynetwork
+
+volumes:
+  db-data:
