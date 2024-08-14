@@ -11,7 +11,7 @@ pipeline {
         stage('Clone Repository') {
             steps {
                 // 레포지토리 클론
-                git branch: 'main', url: 'https://github.com/mynameisjinhohong/KaKaoBootCamp.git', credentialsId: env.GIT_CREDENTIALS_ID
+                git branch: 'main', url: 'https://github.com/mynameisjinhohong/jenkinsTest.git', credentialsId: env.GIT_CREDENTIALS_ID
             }
         }
 //왜 안된
