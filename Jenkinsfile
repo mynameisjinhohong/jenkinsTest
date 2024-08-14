@@ -21,7 +21,7 @@ pipeline {
                 dir('팀 미션_여행서비스') {
                     script {
                         // 도커 컴포즈를 사용하여 빌드 및 배포
-                        sh 'docker-compose -f $DOCKER_COMPOSE_PATH up --build -d'
+                        sh 'docker-compose -f "$DOCKER_COMPOSE_PATH" up --build -d'
                     }
                 }
             }
