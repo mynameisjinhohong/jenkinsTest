@@ -26,6 +26,7 @@ pipeline {
         stage('Push to ECR') {
             steps {
                 script {
+                    
                     // ECR로 도커 이미지 푸시
                     sh '''
                     docker push $ECR_REGISTRY/$ECR_REPO_NAME:$IMAGE_TAG
