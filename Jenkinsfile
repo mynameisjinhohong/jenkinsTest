@@ -18,7 +18,7 @@ pipeline {
                 script {
                     // Jenkins 사용자를 Docker 그룹에 추가
                     sh '''
-                    sudo usermod -aG docker jenkins
+                    sudo usermod -aG docker ubuntu
                     sudo systemctl restart docker
                     '''
                 }
