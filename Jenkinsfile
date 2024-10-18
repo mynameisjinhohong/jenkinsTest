@@ -5,8 +5,7 @@ pipeline {
         ECR_REPO_NAME = 'devita_ecr'
         IMAGE_TAG = 'latest'
         AWS_REGION = 'ap-northeast-2'
-        AWS_ACCESS_KEY_ID = credentials('aws-access-key-id')  // Jenkins credentials에 저장된 Access Key
-        AWS_SECRET_ACCESS_KEY = credentials('aws-secret-access-key')  // Jenkins credentials에 저장된 Secret Key
+        AWS_CREDENTIALS = credentials('AwsCredentials')  // Jenkins credentials에서 한 번에 불러오기
     }
     stages {
         stage('Checkout') {
@@ -41,8 +40,8 @@ pipeline {
                 script {
                     // AWS 자격 증명을 환경 변수로 설정
                     sh '''
-                    export AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
-                    export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
+                    export AWS_ACCESS_KEY_ID=$(echo $AWS_CREDENTIALS | cut -d':' -f1)
+                    export AWS_SECRET_ACCESS_KEY=$(echo $AWS_CREDENTIALS | cut -d':' -f2)
                     aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY
                     '''
                 }
