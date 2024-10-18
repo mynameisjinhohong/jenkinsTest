@@ -13,6 +13,14 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/mynameisjinhohong/jenkinsTest.git'
             }
         }
+        stage('Install AWS CLI') {  // AWS CLI 설치 단계 추가
+            steps {
+                sh '''
+                sudo apt-get update
+                sudo apt-get install -y awscli
+                '''
+            }
+        }
         stage('Login to ECR') {
             steps {
                 script {
