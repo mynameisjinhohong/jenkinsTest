@@ -63,6 +63,7 @@ pipeline {
             steps {
                 script {
                     sh '''
+                    ls -al
                     docker build -t $ECR_REPO_NAME:$IMAGE_TAG .
                     docker tag $ECR_REPO_NAME:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPO_NAME:$IMAGE_TAG
                     '''
