@@ -16,10 +16,25 @@ pipeline {
         stage('Add Jenkins to Docker Group') {
             steps {
                 script {
-                    // Jenkins 사용자를 Docker 그룹에 추가
+                    // Jenkins 사용자를 Docker 그룹에 추가하고, 디버그 정보 출력
                     sh '''
-                    sudo usermod -aG docker ubuntu
+                    echo "현재 Jenkins 실행 사용자:"
+                    whoami
+
+                    echo "Jenkins 사용자가 docker 그룹에 속해 있는지 확인:"
+                    id $(whoami)
+
+                    echo "Jenkins 사용자를 docker 그룹에 추가 중..."
+                    sudo usermod -aG docker $(whoami)
+                    
+                    echo "Docker 그룹에 사용자가 추가된 후 정보:"
+                    id $(whoami)
+
+                    echo "Docker 서비스 재시작 중..."
                     sudo systemctl restart docker
+
+                    echo "Docker 상태 확인:"
+                    sudo systemctl status docker | head -n 10
                     '''
                 }
             }
