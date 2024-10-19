@@ -8,13 +8,6 @@ pipeline {
         AWS_CREDENTIALS = credentials('AwsCredentials')  // AWS 자격 증명 불러오기
     }
     stages {
-        stage('test'){
-            steps{
-                sh '''
-                echo $AWS_CREDENTIALS
-                '''
-            }
-        }
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/mynameisjinhohong/jenkinsTest.git'
@@ -44,11 +37,10 @@ pipeline {
         }
         stage('Login to ECR') {
             steps {
-                script {
-                    // AWS 자격 증명을 환경 변수로 설정
+                withCredentials([[$class: 'AmazonWebServicesCredentialsBinding', credentialsId: 'AwsCredentials', keyIdVariable: 'AWS_ACCESS_KEY_ID', secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']]) {
                     sh '''
-                    export AWS_ACCESS_KEY_ID=$(echo $AWS_CREDENTIALS | cut -d':' -f1)
-                    export AWS_SECRET_ACCESS_KEY=$(echo $AWS_CREDENTIALS | cut -d':' -f2)
+                    echo "Logging into ECR..."
+                    echo $AWS_ACCESS_KEY_ID
                     aws ecr get-login-password --region $AWS_REGION | docker login --username AWS --password-stdin $ECR_REGISTRY
                     '''
                 }
