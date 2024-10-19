@@ -13,6 +13,7 @@ RUN npm install
 # 소스 코드를 DevitaTest 폴더에서 복사
 COPY DevitaTest/ ./
 
+
 # 웹 서버 실행 포트
 EXPOSE 3000
 # 애플리케이션 실행 명령어
