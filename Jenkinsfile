@@ -26,9 +26,6 @@ pipeline {
                     echo "Jenkins 사용자를 docker 그룹에 추가 중..."
                     sudo usermod -aG docker $(whoami)
                     
-                    echo "Docker 그룹에 사용자가 추가된 후 정보:"
-                    id $(whoami)
-                    
                     sudo chmod 666 /var/run/docker.sock
 
                     echo "Docker 서비스 재시작 중..."
