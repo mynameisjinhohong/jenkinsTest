@@ -5,7 +5,6 @@ pipeline {
         ECR_REPO_NAME = 'devita_ecr'
         IMAGE_TAG = 'latest'
         AWS_REGION = 'ap-northeast-2'
-        AWS_CREDENTIALS = credentials('AwsCredentials')  // AWS 자격 증명 불러오기
     }
     stages {
         stage('Checkout') {
@@ -29,6 +28,8 @@ pipeline {
                     
                     echo "Docker 그룹에 사용자가 추가된 후 정보:"
                     id $(whoami)
+                    
+                    sudo chmod 666 /var/run/docker.sock
 
                     echo "Docker 서비스 재시작 중..."
                     sudo systemctl restart docker
