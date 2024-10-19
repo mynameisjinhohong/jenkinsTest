@@ -5,9 +5,16 @@ pipeline {
         ECR_REPO_NAME = 'devita_ecr'
         IMAGE_TAG = 'latest'
         AWS_REGION = 'ap-northeast-2'
-        AWS_CREDENTIALS = credentials('AwsCredentials')  // Jenkins credentials에서 한 번에 불러오기
+        AWS_CREDENTIALS = credentials('AwsCredentials')  // AWS 자격 증명 불러오기
     }
     stages {
+        stage('test'){
+            steps{
+                sh '''
+                echo $AWS_CREDENTIALS
+                '''
+            }
+        }
         stage('Checkout') {
             steps {
                 git branch: 'main', url: 'https://github.com/mynameisjinhohong/jenkinsTest.git'
