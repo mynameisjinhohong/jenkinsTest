@@ -101,7 +101,6 @@ pipeline {
                 docker rm devita_back || true
                 # 최신 이미지로 새 컨테이너 실행
                 docker run -d --name devita_back $ECR_REGISTRY/$ECR_REPO_NAME:$LATEST_IMAGE
-                $ECR_REGISTRY/$ECR_REPO_NAME:$LATEST_IMAGE
                 '''
 
             }
