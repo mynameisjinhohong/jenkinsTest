@@ -5,6 +5,7 @@ pipeline {
         ECR_REPO_NAME = 'devita_ecr'
         IMAGE_TAG = 'latest'
         AWS_REGION = 'ap-northeast-2'
+        INSTANCE_ID = 'i-086704d461847e1a4' // 대상 EC2 인스턴스 ID
     }
     stages {
         stage('Checkout') {
@@ -80,6 +81,30 @@ pipeline {
         }
     }
     post {
+                success {
+            script {
+                // EC2 인스턴스 시작
+                sh '''
+                export AWS_ACCESS_KEY_ID=$(echo $AWS_CREDENTIALS | cut -d':' -f1)
+                export AWS_SECRET_ACCESS_KEY=$(echo $AWS_CREDENTIALS | cut -d':' -f2)
+                aws ec2 start-instances --instance-ids $INSTANCE_ID --region $AWS_REGION
+                aws ec2 wait instance-running --instance-ids $INSTANCE_ID --region $AWS_REGION
+                '''
+
+                // 최신 이미지 가져와서 실행
+                sh '''
+                LATEST_IMAGE=$(aws ecr describe-images --repository-name $ECR_REPO_NAME --query 'sort_by(imageDetails,& imagePushedAt)[-1].imageTags[0]' --output text --region $AWS_REGION)
+                docker pull $ECR_REGISTRY/$ECR_REPO_NAME:$LATEST_IMAGE
+
+                # 이전 컨테이너 종료 및 삭제
+                docker stop <CONTAINER_NAME> || true
+                docker rm <CONTAINER_NAME> || true
+
+                # 최신 이미지로 새 컨테이너 실행
+                docker run -d --name <CONTAINER_NAME> $ECR_REGISTRY/$ECR_REPO_NAME:$LATEST_IMAGE
+                '''
+            }
+        }
         always {
             cleanWs()
         }
