@@ -11,12 +11,13 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
-                    // develop 브랜치에 PR이 머지된 경우에만 파이프라인 실행
-                    if (env.GIT_BRANCH == 'origin/main') {
-                        echo "PR merged into develop branch. Proceeding with pipeline."
-                        git branch: 'main', url: 'https://github.com/KTB-FinalProject-Team1/Devita_Backend' , credentialsId: "githubAccessToken"
+                    def branchName = env.GIT_BRANCH?.replaceFirst('origin/', '')  // 'origin/' 접두사 제거
+                    echo "Detected branch: ${branchName}"
+                    if (branchName == 'main') {
+                        echo "PR merged into main branch. Proceeding with pipeline."
+                        git branch: 'main', url: 'https://github.com/mynameisjinhohong/jenkinsTest', credentialsId: "githubAccessToken"
                     } else {
-                        echo "This pipeline is only triggered for the develop branch."
+                        echo "This pipeline is only triggered for the main branch."
                         currentBuild.result = 'SUCCESS'
                         return
                     }
@@ -39,6 +40,7 @@ pipeline {
             steps {
                 script {
                     sh '''
+                    ls
                     docker build -t $ECR_REPO_NAME:$IMAGE_TAG .
                     docker tag $ECR_REPO_NAME:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPO_NAME:$IMAGE_TAG
                     '''
