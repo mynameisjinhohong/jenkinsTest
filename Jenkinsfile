@@ -16,6 +16,7 @@ pipeline {
         stage('Add Jenkins to Docker Group') {
             steps {
                 script {
+                    
                     // Jenkins 사용자를 Docker 그룹에 추가하고, 디버그 정보 출력
                     sh '''
                     echo "현재 Jenkins 실행 사용자:"
