@@ -11,16 +11,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 script {
-                    def branchName = env.GIT_BRANCH?.replaceFirst('origin/', '')  // 'origin/' 접두사 제거
-                    echo "Detected branch: ${branchName}"
-                    if (branchName == 'main') {
-                        echo "PR merged into main branch. Proceeding with pipeline."
                         git branch: 'main', url: 'https://github.com/mynameisjinhohong/jenkinsTest', credentialsId: "githubAccessToken"
-                    } else {
-                        echo "This pipeline is only triggered for the main branch."
-                        currentBuild.result = 'SUCCESS'
-                        return
-                    }
                 }
             }
         }
